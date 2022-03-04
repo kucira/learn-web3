@@ -1,7 +1,21 @@
 node_modules
+.DS_Store
 
 .cache
 .vercel
 
 public/build
 api/_build
+
+/app/shared/assets/.DS_Store
+/build
+.env
+
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+artifacts
+.secret
+
