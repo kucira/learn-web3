@@ -18,4 +18,5 @@ typechain
 #Hardhat files
 artifacts
 .secret
+cache
 
