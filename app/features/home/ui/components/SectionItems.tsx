@@ -7,7 +7,7 @@ type Props = {
   items: NFT_TYPE[];
 };
 
-const SectionItems = ({ items }: Props) => {
+const SectionItems = ({ items = [] }: Props) => {
   return (
     <Flex flex={1} whiteSpace="nowrap" overflow="auto">
       {items.length > 0 &&
