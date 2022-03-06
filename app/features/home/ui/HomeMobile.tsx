@@ -13,7 +13,7 @@ type Props = {
   data: NFT_TYPE[];
 };
 
-const HomeMobile = ({ data }: Props) => {
+const HomeMobile = ({ data = [] }: Props) => {
   const [isOpen, setOpen] = useState(false);
   return (
     <>

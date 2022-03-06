@@ -17,7 +17,7 @@ export default function Index() {
 
     return (
         <Container maxW={"container.sm"}>
-            <HomeMobile data={data}/>
+            <HomeMobile data={data || []}/>
         </Container>
     );
 }
