@@ -5,6 +5,7 @@ import {
   Box,
   Flex,
   Button,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 
 type Props = {
@@ -18,10 +19,10 @@ const ModalComponent = ({ isOpen = false, setOpen, children }: Props) => {
     <Modal
       isOpen={isOpen}
       onClose={() => setOpen(!isOpen)}
-      closeOnOverlayClick
       motionPreset="slideInBottom"
     >
-      <ModalOverlay onClick={() => setOpen(!isOpen)}>
+      <ModalOverlay>
+        <ModalCloseButton bg="white" />
         <Flex h={"100vh"} alignItems="flex-end">
           <Box
             w="100%"

@@ -4,7 +4,7 @@ import plant from "~/shared/assets/images/plant.jpg";
 type Props = {
     title: string;
     subtitle: string;
-    price: string;
+    price: number;
     isLast?: boolean;
 };
 

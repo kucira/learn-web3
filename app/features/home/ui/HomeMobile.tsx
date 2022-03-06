@@ -6,45 +6,31 @@ import Card from "./components/Card";
 import { Flex, VStack } from "@chakra-ui/react";
 import ModalComponent from "~/shared/ui/Modal";
 import { useState } from "react";
+import SectionItems from "./components/SectionItems";
+import { NFT_TYPE } from "~/shared/types/nft-type";
 
-type Props = {};
+type Props = {
+  data: NFT_TYPE[];
+};
 
-const HomeMobile = (props: Props) => {
+const HomeMobile = ({ data }: Props) => {
   const [isOpen, setOpen] = useState(false);
   return (
     <>
       <ModalComponent isOpen={isOpen} setOpen={setOpen} />
       <VStack pb={4} spacing={10} align="stretch">
-        <Header />
 
         <Category currentMenu="concept" />
 
         <Flex flex={1} justify="end">
-          <ButtonFilter onClick={() => {
-            setOpen(true);
-          }}/>
-        </Flex>
-
-        <Flex flex={1} whiteSpace="nowrap" overflow="auto">
-          <Card
-            title="Model 01"
-            subtitle="Model 01 the best ever product!"
-            price="100"
-          />
-
-          <Card
-            title="Model 01"
-            subtitle="Model 01 the best ever product!"
-            price="100"
-          />
-
-          <Card
-            title="Model 01"
-            subtitle="Model 01 the best ever product!"
-            price="100"
-            isLast
+          <ButtonFilter
+            onClick={() => {
+              setOpen(true);
+            }}
           />
         </Flex>
+
+        <SectionItems items={data} />
       </VStack>
     </>
   );
