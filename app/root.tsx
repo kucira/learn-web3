@@ -11,7 +11,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 import Fonts from '~/shared/libs/Fonts'
 import theme from '~/shared/libs/Theme'
-import Header from './features/home/ui/components/Header'
+import Header from './shared/ui/Header'
 
 export const meta: MetaFunction = () => {
   return { title: 'New Remix App' }

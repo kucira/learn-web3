@@ -1,10 +1,13 @@
 import {
+  Box,
+  Button,
   Container,
   FormControl,
-  FormHelperText,
-  FormLabel,
   Input,
-  Textarea
+  NumberInput,
+  NumberInputField,
+  Spacer,
+  Textarea,
 } from "@chakra-ui/react";
 import { Form } from "remix";
 
@@ -13,13 +16,19 @@ export default function FormCreate() {
     <Container maxW="container.sm">
       <Form>
         <FormControl>
-          <FormLabel htmlFor="asset-name">Asset Name</FormLabel>
-          <Input id="asset-name" />
+          <Input id="asset-name" placeholder="Asset Name" mb={5} />
 
-          <FormLabel htmlFor="asset-desc">Description</FormLabel>
-          <Textarea id="asset-desc" />
+          <Textarea id="asset-desc" placeholder="Asset Description" mb={5} />
 
+          <NumberInput min={0} mb={5}>
+            <NumberInputField id="asset-price" placeholder="Asset Price" />
+          </NumberInput>
 
+          <Input id="asset-file" placeholder="Asset File" mb={5} type="file" />
+
+          <Box textAlign="center">
+            <Button>Create Asset Digital</Button>
+          </Box>
         </FormControl>
       </Form>
     </Container>

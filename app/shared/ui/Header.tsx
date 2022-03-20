@@ -1,10 +1,9 @@
 import { Box, Flex, Image, Container, useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
 import { Link } from "remix";
+import CartMenu from "~/features/home/ui/components/CartMenu";
 import menuIcon from "~/shared/assets/icon/menu-icon.svg";
 import searchIcon from "~/shared/assets/icon/search-icon.svg";
 import Menu from "~/shared/ui/Menu";
-import CartMenu from "./CartMenu";
 
 const Header = () => {
   const { isOpen, onToggle } = useDisclosure();
