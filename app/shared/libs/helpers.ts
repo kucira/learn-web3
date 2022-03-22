@@ -18,7 +18,7 @@ const getSupabase = () => {
   if(supabase) 
     return supabase;
     
-  supabase = createClient(URL_SUPABASE, SK);
+  return supabase = createClient(URL_SUPABASE, SK);
 }
 
 export { getSigner, getSupabase };

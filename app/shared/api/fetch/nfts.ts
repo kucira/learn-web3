@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
+import { getSupabase } from "~/shared/libs/helpers";
 import { NFT_TYPE } from "~/shared/types/nft-type";
 
 import NFT from "../../../../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../../../../artifacts/contracts/NFTMarket.sol/NFTMarket.json";
 import { NFT_ADDRESS, NFT_MARKETPLACE_ADDRESS } from "../../constants/config";
-
 
 const loadNfts = async () => {
   const provider = new ethers.providers.JsonRpcProvider();
@@ -41,4 +41,13 @@ const loadNfts = async () => {
   return items;
 };
 
-export { loadNfts };
+const getImageBucket = async (path: string) => {
+  // Use the JS library to create a bucket.
+  const client = getSupabase();
+  const { data, error } = await client.storage.from("assets").download(path);
+  if (error) throw Error(error);
+
+  return data;
+};
+
+export { loadNfts, getImageBucket };

@@ -40,24 +40,28 @@ const createItem = async ({
   file: any;
 }) => {
   const client = getSupabase();
-
   // upload to storage
-  const imageFile = file.files[0];
-
+  const arrBuffer = await file.arrayBuffer();
   const res = await client.storage
     .from("assets")
-    .upload(`public/${imageFile.name}`, imageFile, {
+    .upload(`public/${file.name}`, arrBuffer, {
       cacheControl: "3600",
+      contentType: file.type,
       upsert: false,
     });
-  console.log(res.data, res.error);
+
+  if (res.error) {
+    return res.error;
+  }
 
   const { publicURL } = client.storage
     .from("assets")
-    .getPublicUrl(`public/${imageFile.name}`);
+    .getPublicUrl(`public/${file.name}`);
 
   //todo create  item on blockchain and save the metadata
-  const { tokenId } = await createSale(price, publicURL);
+  // const { tokenId } = await createSale(price, publicURL);
+
+  //todo get owner & seller
 
   // todo create item and save using supabase
   const { data, error } = await client.from("nfts").insert([
@@ -66,9 +70,11 @@ const createItem = async ({
       description,
       price,
       image: publicURL,
-      tokenId,
+      tokenId: '123456789900',
     },
   ]);
+
+  return { data, error };
 };
 
 const createSale = async (priceInput: string, url: any) => {
@@ -102,4 +108,4 @@ const createSale = async (priceInput: string, url: any) => {
   };
 };
 
-export { buyNft };
+export { buyNft, createItem };
