@@ -8,20 +8,20 @@ import {
   NumberInputField,
   Textarea,
 } from "@chakra-ui/react";
-import { Form, useTransition } from "remix";
+import useForm from "../hooks/useForm";
 
 export default function CreateMobile() {
-  const transition = useTransition();
+  const { handleSubmit, isLoading } = useForm();
   return (
     <Container maxW="container.sm">
       <FormControl>
-        <Form method="post" encType="multipart/form-data">
+        <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <Input name="asset-name" placeholder="Asset Name" mb={5} />
 
           <Textarea name="asset-desc" placeholder="Asset Description" mb={5} />
 
           <NumberInput min={0} mb={5}>
-            <NumberInputField name="asset-price" placeholder="Asset Price" />
+            <NumberInputField name="asset-price" placeholder="Asset Price in Matic" />
           </NumberInput>
 
           <Input
@@ -34,12 +34,12 @@ export default function CreateMobile() {
           <Box textAlign="center">
             <Button
               type="submit"
-              isLoading={transition.submission ? true : false}
+              isLoading={isLoading}
             >
               Create Asset Digital
             </Button>
           </Box>
-        </Form>
+        </form>
       </FormControl>
     </Container>
   );

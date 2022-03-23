@@ -9,23 +9,25 @@ import { getSigner, getSupabase } from "~/shared/libs/helpers";
 
 const buyNft = async (nft: NFT_TYPE) => {
   const signer = await getSigner();
-  const contract = new ethers.Contract(
-    NFT_MARKETPLACE_ADDRESS,
-    NFTMarket.abi,
-    signer
-  );
+  if (signer) {
+    const contract = new ethers.Contract(
+      NFT_MARKETPLACE_ADDRESS,
+      NFTMarket.abi,
+      signer
+    );
 
-  const price = ethers.utils.formatUnits(nft.price.toString(), "ether");
+    const price = ethers.utils.formatUnits(nft.price.toString(), "ether");
 
-  const transaction = await contract.createMarketSale(
-    NFT_MARKETPLACE_ADDRESS,
-    nft.tokenId,
-    {
-      value: price,
-    }
-  );
+    const transaction = await contract.createMarketSale(
+      NFT_MARKETPLACE_ADDRESS,
+      nft.tokenId,
+      {
+        value: price,
+      }
+    );
 
-  return await transaction.wait();
+    return transaction.wait();
+  }
 };
 
 const createItem = async ({
@@ -41,10 +43,10 @@ const createItem = async ({
 }) => {
   const client = getSupabase();
   // upload to storage
-  const arrBuffer = await file.arrayBuffer();
+  // const arrBuffer = await file.arrayBuffer();
   const res = await client.storage
     .from("assets")
-    .upload(`public/${file.name}`, arrBuffer, {
+    .upload(`public/${file.name}`, file, {
       cacheControl: "3600",
       contentType: file.type,
       upsert: false,
@@ -59,9 +61,7 @@ const createItem = async ({
     .getPublicUrl(`public/${file.name}`);
 
   //todo create  item on blockchain and save the metadata
-  // const { tokenId } = await createSale(price, publicURL);
-
-  //todo get owner & seller
+  const { tokenId, transactionRes }: any = await createSale(price, publicURL);
 
   // todo create item and save using supabase
   const { data, error } = await client.from("nfts").insert([
@@ -70,7 +70,8 @@ const createItem = async ({
       description,
       price,
       image: publicURL,
-      tokenId: '123456789900',
+      tokenId,
+      owner: transactionRes?.from,
     },
   ]);
 
@@ -79,33 +80,38 @@ const createItem = async ({
 
 const createSale = async (priceInput: string, url: any) => {
   const signer = await getSigner();
-  let contract = new ethers.Contract(NFT_ADDRESS, NFT.abi, signer);
 
-  let transaction = await contract.createToken(url);
-  const tx = await transaction.wait();
+  if (signer) {
+    let contract = new ethers.Contract(NFT_ADDRESS, NFT.abi, signer);
 
-  const event = tx.event[0];
-  const value = event.args[2];
-  const tokenId = value.toNumber();
+    let transaction = await contract.createToken(url);
+    const tx = await transaction.wait();
+    console.log(tx, "tx", transaction, "transaction");
 
-  const price = ethers.utils.parseUnits(priceInput, "ether");
-  contract = new ethers.Contract(
-    NFT_MARKETPLACE_ADDRESS,
-    NFTMarket.abi,
-    signer
-  );
+    const event = tx.events[0];
+    const value = event.args[2];
+    const tokenId = value.toNumber();
 
-  let listingPrice = await contract.getListingPrice();
-  listingPrice = listingPrice.toString();
+    const price = ethers.utils.parseUnits(priceInput, "ether");
+    contract = new ethers.Contract(
+      NFT_MARKETPLACE_ADDRESS,
+      NFTMarket.abi,
+      signer
+    );
 
-  transaction = await contract.createMarketItem(NFT_ADDRESS, tokenId, price, {
-    value: listingPrice,
-  });
-  await transaction.wait();
-  return {
-    tokenId,
-    price,
-  };
+    let listingPrice = await contract.getListingPrice();
+    listingPrice = listingPrice.toString();
+
+    transaction = await contract.createMarketItem(NFT_ADDRESS, tokenId, price, {
+      value: listingPrice,
+    });
+    const transactionRes = await transaction.wait();
+    return {
+      tokenId,
+      price,
+      transactionRes,
+    };
+  }
 };
 
 export { buyNft, createItem };
