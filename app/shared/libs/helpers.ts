@@ -5,13 +5,17 @@ import { URL_SUPABASE, SK } from "../constants/config";
 
 let supabase: any = null;
 const getSigner = async () => {
-  const web3Modal = new Web3Modal();
-  const connection = await web3Modal.connect();
+  console.log(window, 'window')
+  if(typeof window !== "undefined") {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+  
+    const provider = new ethers.providers.Web3Provider(connection);
+    return provider.getSigner();
+  
+  }
 
-  const provider = new ethers.providers.Web3Provider(connection);
-  const signer = provider.getSigner();
-
-  return signer;
+  return null;
 };
 
 const getSupabase = () => {

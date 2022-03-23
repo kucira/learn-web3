@@ -21,9 +21,9 @@ describe("NFTMarket", function () {
     const auctionPrice = ethers.utils.parseUnits('1', 'ether');
     
     await nft.createToken('https://www.mytokenlocation.com');
-    await nft.createToken('https://www.mytokenlocatio2.com');
+    await nft.createToken('https://www.mytokenlocation2.com');
 
-    await market.createMarketItem(nftContractAddress, 1, auctionPrice, { value: listingPrice });
+    const res = await market.createMarketItem(nftContractAddress, 1, auctionPrice, { value: listingPrice });
     await market.createMarketItem(nftContractAddress, 2, auctionPrice, { value: listingPrice });
 
     const [_, buyerAddress] = await ethers.getSigners();
@@ -42,7 +42,7 @@ describe("NFTMarket", function () {
       }
     }))
 
-    console.log(transformItem, ' : items')
+    console.log(transformItem, ' : items', res, 'res create market item')
 
   });
 });
