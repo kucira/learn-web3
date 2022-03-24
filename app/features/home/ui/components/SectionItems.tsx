@@ -9,10 +9,10 @@ type Props = {
 
 const SectionItems = ({ items = [] }: Props) => {
   return (
-    <Flex as="section" flex={1} whiteSpace="nowrap" overflow="auto">
+    <Flex as="section" flex={1} whiteSpace="nowrap" overflow="auto" scrollSnapType="x">
       {items?.length > 0 &&
         items.map((i) => (
-          <Card title={i.name} subtitle={i.description} price={i.price} />
+          <Card title={i.name} subtitle={i.description} price={i.price} image={i.image} />
         ))}
 
       {items?.length === 0 && (

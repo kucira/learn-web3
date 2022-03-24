@@ -5,17 +5,19 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from 'remix'
-import type { MetaFunction } from 'remix'
-import { ChakraProvider } from '@chakra-ui/react'
+} from "remix";
+import type { MetaFunction } from "remix";
+import { ChakraProvider } from "@chakra-ui/react";
 
-import Fonts from '~/shared/libs/Fonts'
-import theme from '~/shared/libs/Theme'
-import Header from './shared/ui/Header'
+import Fonts from "~/shared/libs/Fonts";
+import theme from "~/shared/libs/Theme";
+import Header from "./shared/ui/Header";
+import ModalProvider from "./shared/libs/ModalProvider";
+import ModalWallet from "./shared/ui/ModalWallet";
 
 export const meta: MetaFunction = () => {
-  return { title: 'New Remix App' }
-}
+  return { title: "New Remix App" };
+};
 
 // export function links() {
 //   return [{ rel: "stylesheet", href: styles }];
@@ -32,14 +34,17 @@ export default function App() {
       </head>
       <body>
         <ChakraProvider theme={theme}>
-          <Fonts />
-          <Header />
-          <Outlet />
+          <ModalProvider>
+            <ModalWallet />
+            <Fonts />
+            <Header />
+            <Outlet />
+          </ModalProvider>
         </ChakraProvider>
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        {process.env.NODE_ENV === "development" && <LiveReload />}
       </body>
     </html>
-  )
+  );
 }

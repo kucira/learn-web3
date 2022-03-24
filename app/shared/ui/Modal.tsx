@@ -4,17 +4,22 @@ import {
   ModalHeader,
   Box,
   Flex,
-  Button,
   ModalCloseButton,
 } from "@chakra-ui/react";
 
 type Props = {
   isOpen: boolean;
   setOpen: any;
-  children?: React.ReactElement;
+  children?: React.ReactChild | React.ReactChild[];
+  title?: string;
 };
 
-const ModalComponent = ({ isOpen = false, setOpen, children }: Props) => {
+const ModalComponent = ({
+  isOpen = false,
+  setOpen,
+  children,
+  title,
+}: Props) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -31,13 +36,8 @@ const ModalComponent = ({ isOpen = false, setOpen, children }: Props) => {
             borderTopLeftRadius="lg"
             borderTopRightRadius="lg"
           >
-            <ModalHeader>Modal Title</ModalHeader>
-            <Flex justify="space-around">
-              <Button>b01</Button>
-              <Button>b02</Button>
-              <Button>b03</Button>
-              {children}
-            </Flex>
+            <ModalHeader>{title}</ModalHeader>
+            <Flex justify="space-around">{children}</Flex>
           </Box>
         </Flex>
       </ModalOverlay>
