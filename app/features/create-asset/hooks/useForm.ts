@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createItem } from "~/shared/api/mutation/nfts";
+import ModalContext from "~/shared/libs/ModalContext";
 
-const useForm =  () => {
+const useForm = () => {
+  const modalContext = useContext(ModalContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e : any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     setIsLoading((prevState: any) => !prevState);
     const formData = new FormData(e.target);
-    
+
     const form = {
       name: formData.get("asset-name") as string,
       description: formData.get("asset-desc") as string,
@@ -17,7 +19,9 @@ const useForm =  () => {
       file: formData.get("asset-file") as any,
     };
 
-    await createItem(form);
+    const { error } = await createItem(form);
+    if (error?.includes("not found")) modalContext.setIsShowModal(true);
+
     setIsLoading((prevState: any) => !prevState);
   };
 
