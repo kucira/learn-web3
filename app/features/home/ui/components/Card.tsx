@@ -35,6 +35,9 @@ const Card = ({ title, subtitle, price, image, isLast = false }: Props) => {
           h="100%"
           borderRadius="5%"
           objectFit="contain"
+          htmlWidth="181"
+          htmlHeight="260"
+          fallbackSrc="https://via.placeholder.com/181"
         />
       </Box>
 
